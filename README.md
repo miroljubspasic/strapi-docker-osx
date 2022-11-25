@@ -1,18 +1,18 @@
 # 🚀 Getting started with Strapi
 
-## docker mac os 
+## docker mac os
 #### install docker & mutagen (https://mutagen.io/documentation/introduction/installation)
-#### run make init  (build and up all containers)
+#### copy .env.example to .env (cp .env.example .env) && run make init  (build and up all containers)
 
 ##### useful commands:
-* make up - to start containers 
-* make down - to shutdown 
-* make logs - to view logs from containers 
+* make up - to start containers
+* make down - to shutdown
+* make logs - to view logs from containers
 
 ## strapi admin
 * http://localhost:1337/
 
-## pgadmin 
+## pgadmin
 * http://localhost:5050
 
 
