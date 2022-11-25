@@ -5,9 +5,11 @@
 #### copy .env.example to .env (cp .env.example .env) && run make init  (build and up all containers)
 
 ##### useful commands:
-* make up - to start containers
-* make down - to shutdown
+* make up - to build containers
+* make down - to destroy containers
 * make logs - to view logs from containers
+* make start - to start containers
+* make stop - to stop containers
 
 ## strapi admin
 * http://localhost:1337/
