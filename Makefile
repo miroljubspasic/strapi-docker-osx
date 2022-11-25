@@ -12,5 +12,11 @@ up:
 down:
 	@mutagen-compose down
 
+start:
+	@mutagen-compose start
+
+stop:
+	@mutagen-compose stop
+
 logs:
 	@mutagen-compose logs -f
