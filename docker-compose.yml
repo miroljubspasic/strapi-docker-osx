@@ -1,0 +1,83 @@
+
+version: "3"
+
+services:
+  app:
+    build:
+      context: ./
+    container_name: strapi_app
+    # platform: linux/amd64 #for platform error on Apple M1 chips
+    restart: unless-stopped
+    environment:
+      NODE_ENV: development
+      DATABASE_CLIENT: postgres
+      DATABASE_HOST: ${DATABASE_HOST:-db}
+      DATABASE_PORT: ${DATABASE_PORT:-5432}
+      DATABASE_NAME: ${DATABASE_NAME:-app}
+      DATABASE_USERNAME: ${DATABASE_USERNAME:-postgres}
+      DATABASE_PASSWORD: ${DATABASE_PASSWORD:-changeme}
+    volumes:
+      - code:/opt/app # mount the mutagen volume
+    networks:
+      - strapi
+    ports:
+      - 1337:1337
+    depends_on:
+      - db
+
+  db:
+    image: postgres:14
+    container_name: strapi_db
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: ${DATABASE_USERNAME:-postgres}
+      POSTGRES_PASSWORD: ${DATABASE_PASSWORD:-changeme}
+      PGDATA: /data/postgres
+    volumes:
+      - strapi-data-db:/var/lib/postgresql/data
+    ports:
+      - "5433:5432"
+    networks:
+      - strapi
+
+  pgadmin:
+    container_name: strapi_pgadmin
+    image: dpage/pgadmin4
+    restart: unless-stopped
+    environment:
+      PGADMIN_DEFAULT_EMAIL: ${PGADMIN_DEFAULT_EMAIL:-pgadmin4@pgadmin.org}
+      PGADMIN_DEFAULT_PASSWORD: ${PGADMIN_DEFAULT_PASSWORD:-admin}
+      PGADMIN_CONFIG_SERVER_MODE: 'False'
+    volumes:
+       - pgadmin:/var/lib/pgadmin
+    ports:
+      - "${PGADMIN_PORT:-5050}:80"
+    networks:
+      - strapi
+
+volumes:
+  code:
+    driver: local
+  strapi-data-db:
+    driver: local
+  pgadmin:
+    driver: local
+
+networks:
+  strapi:
+    name: Strapi
+    driver: bridge
+
+x-mutagen:
+  sync:
+    defaults:
+      ignore:
+        vcs: true
+    strapi-data:
+      alpha: "./"
+      beta: "volume://code"
+      mode: "two-way-resolved" #https://mutagen.io/documentation/synchronization
+    strapi-data-db:
+      alpha: "./postgres-db"
+      beta: "volume://strapi-data-db"
+      mode: "two-way-resolved" #https://mutagen.io/documentation/synchronization
