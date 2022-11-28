@@ -1,7 +1,7 @@
 # 🚀 Getting started with Strapi
 
 ## docker mac os
-#### install docker & mutagen (https://mutagen.io/documentation/introduction/installation)
+#### install docker, mutagen & mutagen-compose (https://mutagen.io/documentation/introduction/installation)
 #### copy .env.example to .env (cp .env.example .env) && run make init  (build and up all containers)
 
 ##### useful commands:
